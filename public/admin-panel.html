@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('me.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 60px auto;
+      background-color: rgba(255, 255, 224, 0.7);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .admin-options {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .admin-options button {
+      padding: 14px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 6px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .admin-options button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    .back-button {
+      margin-top: 30px;
+      background-color: #f44336;
+    }
+
+    .back-button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Admin Panel</h1>
+
+    <div class="admin-options">
+      <button onclick="window.location.href='admin.html'">Create Exam</button>
+      <button onclick="window.location.href='manage.html'">View & Manage Exams</button>
+      <button class="back-button" onclick="window.location.href='index1.html'">Back to Dashboard</button>
+    </div>
+  </div>
+
+</body>
+</html>

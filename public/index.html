@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Exam Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+      background-image: url('home1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    header {
+      background-color: #2563eb;
+      color: white;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-container h1 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    nav a {
+      margin-left: 24px;
+      font-size: 16px;
+      color: white;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #4b5563;
+    }
+
+    .features {
+      padding: 64px 20px 40px;
+      backdrop-filter: blur(10px);
+      background-color: rgba(243, 244, 246, 0.7);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .features h3 {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .feature-card {
+      background-color: white;
+      width: 340px;
+      min-height: 160px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card h4 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .login {
+      text-align: center;
+      padding: 64px 20px;
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .login h3 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .login a {
+      display: inline-block;
+      background-color: #16a34a;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .login a:hover {
+      background-color: #15803d;
+    }
+
+    .more-btn-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .more-btn {
+      background-color: #2563eb;
+      color: white;
+      font-size: 16px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .more-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    footer {
+      background-color: #1f2937;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .feature-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <h1>Online Exam Portal</h1>
+      <nav>
+        <a href="features.html">Features</a>
+        <a href="index1.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Create Exams Easily for Any Subject</h2>
+    <p>Only Admin/Authorized Teachers can create online exam sheets.</p><br><br>
+    <h2>Attempt Exams with Confidence</h2>
+    <p>Students can attempt exam with our easy to use portal.</p>
+  </section>
+
+  <section class="features">
+    <div class="features-container">
+      <h3>Key Features</h3>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h4>Subject-Wise Exams</h4>
+          <p>Create and manage exams for any subject – Maths, Science, History, and more.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Admin Panel</h4>
+          <p>Only authorized users (Admins or Teachers) can create exam sheets.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Automatic Scoring</h4>
+          <p>Exams are auto-evaluated, with instant result generation.</p>
+        </div>
+      </div>
+
+      <div class="more-btn-container">
+        <a href="features.html">
+          <button class="more-btn">More Features</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="login">
+    <h3>Login Here</h3>
+    <a href="index1.html">Login</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Online Exam Portal. All rights reserved.
+  </footer>
+
+</body>
+</html>

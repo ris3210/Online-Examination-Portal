@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attempted Exams</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('me.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 20px 20px 40px;
+      margin-top: 10px;
+      background: transparent;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .attempt {
+      background: rgba(255, 255, 224, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      color: #000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .attempt:hover {
+      transform: scale(1.01);
+    }
+
+    .attempt h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .button {
+      padding: 8px 16px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .back-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .back-button {
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Your Attempted Exams</h1>
+    <div id="attempts-container" class="attempts-container">Loading...</div>
+
+    <div class="back-container">
+      <button class="back-button" onclick="window.location.href='index1.html'">Back to Dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const username = sessionStorage.getItem('username');
+      if (!username) {
+        alert("You must be logged in.");
+        window.location.href = 'index1.html';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/attempts/${username}`);
+        const attempts = await res.json();
+
+        const container = document.getElementById('attempts-container');
+        container.innerHTML = '';
+
+        if (!Array.isArray(attempts) || attempts.length === 0) {
+          container.innerHTML = '<p class="no-data">You have not attempted any exams yet.</p>';
+          return;
+        }
+
+        attempts.forEach((attempt) => {
+          const div = document.createElement('div');
+          div.className = 'attempt';
+
+          const date = new Date(attempt.submittedAt);
+          let hours = date.getHours();
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12 || 12;
+          const dateStr = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}, ${hours}:${minutes} ${ampm}`;
+
+          div.innerHTML = `
+            <h3>${attempt.examTitle}</h3>
+            <p><strong>Score:</strong> ${attempt.score} / ${attempt.total}</p>
+            <p><strong>Attempted On:</strong> ${dateStr}</p>
+          `;
+
+          const btn = document.createElement('button');
+          btn.textContent = 'View Detailed Score';
+          btn.className = 'button';
+          btn.addEventListener('click', () => {
+            sessionStorage.setItem('userAnswers', JSON.stringify(attempt.answers));
+            sessionStorage.setItem('examTitle', attempt.examTitle);
+            sessionStorage.setItem('resultScore', attempt.score);
+            sessionStorage.setItem('resultTotal', attempt.total);
+            sessionStorage.setItem('questionsSnapshot', JSON.stringify(attempt.questionsSnapshot));
+            sessionStorage.setItem('examResult', JSON.stringify({ examId: attempt.examId }));
+            sessionStorage.setItem('source', 'attempts');
+            sessionStorage.setItem('examSubmittedAt', dateStr);
+            
+            window.open('detailed-result.html', '_blank');
+          });
+
+          div.appendChild(btn);
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error(err);
+        document.getElementById('attempts-container').innerHTML = '<p class="no-data">Failed to load attempts.</p>';
+      }
+    });
+  </script>
+
+</body>
+</html>

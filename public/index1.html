@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Exam Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="main-content-box">
+    <h1>Online Examination Portal</h1>
+
+    <section id="login-section">
+      <h2>Login</h2>
+      <form id="login-form">
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" name="username" required />
+        <br /><br>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="password" required />
+        <br />
+        <button type="submit">Login</button>
+      </form>
+      <p id="login-error" style="color:red;"></p>
+      <p>
+        Don't have an account?
+        <button type="button" id="show-register">Register here</button>
+      </p>
+    </section>
+
+    <section id="register-section" class="hidden">
+      <h2>Register</h2>
+      <form id="register-form">
+        <label for="register-username">Username:</label>
+        <input type="text" id="register-username" name="username" required />
+        <br /><br>
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" name="password" required />
+        <br /><br>
+        <label for="register-confirm-password">Confirm Password:</label>
+        <input type="password" id="register-confirm-password" name="confirm-password" required />
+        <br />
+        <button type="submit">Register</button>
+      </form>
+      <p id="register-error" style="color:red;"></p>
+      <p>
+        Already have an account?
+        <button type="button" id="show-login">Login here</button>
+      </p>
+    </section>
+
+    <section id="dashboard-section" class="hidden">
+      <nav>
+        <button type="button" id="attempted-btn">Attempted Exams</button>
+        <button type="button" id="admin-panel-btn" class="hidden">Admin Panel</button>
+        <button type="button" id="logout-btn">Logout</button>
+      </nav>
+      <h2>Available Exams</h2>
+      <div class="exam-list" id="exam-list">Loading...</div>
+    </section>
+
+    <section id="attempts-section" class="hidden">
+      <h2>Attempted Exams</h2>
+      <div class="exam-list" id="attempts-list">Loading...</div>
+      <div style="text-align:center; margin-top:20px;">
+        <button id="back-to-dashboard" style="padding:10px 20px; background:#2196F3; color:white; border:none; border-radius:5px;">Back to Dashboard</button>
+      </div>
+    </section>
+  </div> <div id="home-link" class="back-home">
+    <a href="index.html">Back to Home</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Features</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #2d2d2d;
+      line-height: 1.6;
+      background-image: url('back1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      background-color: #2563eb;
+      color: white;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    nav a {
+      margin-left: 20px;
+      font-size: 16px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      background-color: rgba(243, 244, 246, 0.1);
+      padding: 64px 20px 40px;
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section-container h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .section-container p {
+      font-size: 18px;
+      color: #4b5563;
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      transition: transform 0.25s ease, font-weight 0.25s ease;
+    }
+
+    .feature-card h4 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .feature-card:hover {
+      transform: scale(1.03);
+    }
+
+    .feature-card:hover h4,
+    .feature-card:hover p {
+      font-weight: bold;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 36px;
+      background-color: #16a34a;
+      color: white;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #15803d;
+    }
+
+    footer {
+      background-color: #1f2937;
+      color: white;
+      text-align: center;
+      padding: 16px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="header-title">Features</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index1.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-container">
+      <h2>Explore Our Powerful Features</h2>
+      <p>Everything you need to manage and take exams seamlessly</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h4>Subject-Wise Exams</h4>
+          <p>Create exams by subject like Maths, Science, History, etc., and manage them easily.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Admin Control Panel</h4>
+          <p>Admins and authorized teachers can create, edit, or delete exams and monitor performance.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Automatic Scoring</h4>
+          <p>Exams are auto-evaluated, with instant result generation and detailed answer breakdowns.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Timer & Anti-Cheat</h4>
+          <p>Each exam includes a countdown timer, auto-submit on fullscreen exit, and tab switching detection.</p>
+        </div>
+        <div class="feature-card">
+          <h4>User Authentication</h4>
+          <p>Students and teachers log in with secure credentials to access exams or create new ones.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Result Archive</h4>
+          <p>Students can view detailed results of all previously attempted exams including score, date, and answers.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Detailed Result Breakdown</h4>
+          <p>See which answers were correct, incorrect, or not attempted with clear visual indicators after submission.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Secure Submission Handling</h4>
+          <p>All submissions are securely recorded with timestamps, helping prevent data loss or duplicate attempts.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Mobile-Friendly Interface</h4>
+          <p>The portal is fully responsive and optimized for smartphones and tablets for accessibility on the go.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Developer Access Panel</h4>
+          <p>Grant or revoke admin privileges using a secure developer-only page accessible by the portal creator.</p>
+        </div>
+        <div class="feature-card">
+          <h4>Attempt History with Timestamps</h4>
+          <p>Track every exam attempted along with exact date and time, enabling full transparency.</p>
+        </div>
+        <div class="feature-card">
+          <h4>More features on the way</h4>
+          <p>The option of downloading a PDF version of the detailed result & a ton of other features will soon be available.</p>
+        </div>
+      </div>
+
+      <a href="index.html" class="back-button">Back to Home</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Online Exam Portal. All rights reserved.
+  </footer>
+
+</body>
+</html>

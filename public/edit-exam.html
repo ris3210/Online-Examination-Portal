@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Exam</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('me.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background-color: rgba(255, 255, 224, 0.7);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .question {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .question-label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .option-input {
+      margin-bottom: 10px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .submit-btn,
+    .back-btn,
+    .add-btn,
+    .delete-question-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      color: white;
+    }
+
+    .submit-btn { background-color: #4CAF50; }
+    .back-btn { background-color: #2196F3; }
+    .add-btn { background-color: #9C27B0; }
+    .delete-question-btn {
+      background-color: #f44336;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Edit Exam</h1>
+
+    <form id="edit-form">
+      <label for="exam-title">Exam Title:</label>
+      <input type="text" id="exam-title" name="title" required />
+
+      <div id="questions-container"></div>
+
+      <div class="btn-group">
+        <button type="submit" class="submit-btn">Update Exam</button>
+        <button type="button" class="back-btn" onclick="window.location.href='manage.html'">Back</button>
+        <button type="button" class="add-btn" onclick="addNewQuestion()">Add Question</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const examId = urlParams.get('id');
+    const questionsContainer = document.getElementById('questions-container');
+    const form = document.getElementById('edit-form');
+    const titleInput = document.getElementById('exam-title');
+    let currentExam = null;
+
+    async function loadExam() {
+      try {
+        const res = await fetch(`/api/exams/${examId}`);
+        if (!res.ok) throw new Error('Failed to load exam');
+        const exam = await res.json();
+        currentExam = exam;
+        titleInput.value = exam.title;
+        exam.questions.forEach((q) => addQuestionBlock(q, false));
+        renumberQuestions();
+      } catch (err) {
+        alert('Error loading exam');
+        console.error(err);
+      }
+    }
+
+    function addQuestionBlock(q = { text: '', options: ['', '', '', ''], correctAnswer: null }, isNew = true) {
+      const i = questionsContainer.children.length;
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.setAttribute('data-index', i);
+      div.setAttribute('data-new', isNew);
+      div.innerHTML = `
+        <label class="question-label">Question ${i + 1}</label>
+        <input type="text" name="qtext-${i}" value="${q.text}" />
+
+        ${q.options.map((opt, j) => `
+          <input type="text" name="opt-${i}-${j}" class="option-input" value="${opt}" placeholder="Option ${j + 1}" />
+        `).join('')}
+
+        <label>Correct Option:</label>
+        <select name="correct-${i}">
+          <option value="">Select</option>
+          ${q.options.map((opt, j) => {
+            const selected = (q.correctAnswer === opt) ? 'selected' : '';
+            return `<option value="${j}" ${selected}>${j + 1}</option>`;
+          }).join('')}
+        </select>
+
+        ${!isNew ? `<button type="button" class="delete-question-btn" onclick="deleteQuestion(this)">Delete</button>` : ''}
+      `;
+      questionsContainer.appendChild(div);
+      renumberQuestions();
+    }
+
+    function deleteQuestion(btn) {
+      if (!confirm("Are you sure you want to delete this question?")) return;
+      const questionDiv = btn.closest('.question');
+      questionsContainer.removeChild(questionDiv);
+      renumberQuestions();
+    }
+
+    function renumberQuestions() {
+      document.querySelectorAll('.question').forEach((div, index) => {
+        div.setAttribute('data-index', index);
+        div.querySelector('.question-label').innerText = `Question ${index + 1}`;
+        div.querySelector(`[name^="qtext-"]`).name = `qtext-${index}`;
+        div.querySelectorAll('.option-input').forEach((input, j) => {
+          input.name = `opt-${index}-${j}`;
+        });
+        div.querySelector('select').name = `correct-${index}`;
+      });
+    }
+
+    function addNewQuestion() {
+      addQuestionBlock(undefined, true);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const updatedTitle = titleInput.value.trim();
+      if (!updatedTitle) return alert("Exam title cannot be empty.");
+
+      const updatedQuestions = [];
+      const questionDivs = document.querySelectorAll('.question');
+
+      for (let i = 0; i < questionDivs.length; i++) {
+        const div = questionDivs[i];
+        const isNew = div.getAttribute('data-new') === 'true';
+        const text = div.querySelector(`[name="qtext-${i}"]`).value.trim();
+        const options = [
+          div.querySelector(`[name="opt-${i}-0"]`).value.trim(),
+          div.querySelector(`[name="opt-${i}-1"]`).value.trim(),
+          div.querySelector(`[name="opt-${i}-2"]`).value.trim(),
+          div.querySelector(`[name="opt-${i}-3"]`).value.trim(),
+        ];
+        if (!text || options.some(opt => !opt)) return alert(`Please fill all fields for Question ${i + 1}.`);
+        const correctIndex = div.querySelector(`[name="correct-${i}"]`).value;
+        const correctAnswer = correctIndex !== '' ? options[parseInt(correctIndex)] : null;
+        if (isNew && (correctIndex === '' || correctAnswer === null)) {
+          return alert(`Please select a correct option for new Question ${i + 1}.`);
+        }
+        updatedQuestions.push({ text, options, correctAnswer });
+      }
+
+      const payload = { title: updatedTitle, questions: updatedQuestions };
+      try {
+        const res = await fetch(`/api/exams/${examId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('Update failed');
+        alert('Exam updated successfully!');
+        window.location.href = 'manage.html';
+      } catch (err) {
+        console.error(err);
+        alert('Error updating exam');
+      }
+    });
+
+    loadExam();
+  </script>
+</body>
+</html>

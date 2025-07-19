@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 50px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+    .score {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    .button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>✅ Exam Submitted Successfully</h1>
+  <p class="score" id="score-text">Loading score...</p>
+  <button class="button" onclick="window.location.href='detailed-result.html'">View Score in Detail</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const score = sessionStorage.getItem('resultScore');
+      const total = sessionStorage.getItem('resultTotal');
+
+      if (!score || !total) {
+        document.getElementById('score-text').textContent = 'Unable to fetch score.';
+      } else {
+        document.getElementById('score-text').textContent = `Your Score: ${score} out of ${total}`;
+      }
+    });
+  </script>
+
+</body>
+</html>

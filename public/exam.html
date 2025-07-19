@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam - Online Exam Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+
+    body.instruction-bg {
+      background: url('back.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    h1#exam-title {
+      font-size: 28px;
+      color: #2c3e50;
+    }
+
+    #exam-rules {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 15px 25px;
+      background-color: #ffffe0;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #333;
+      list-style-type: disc;
+    }
+
+    #start-exam-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #start-exam-btn:hover {
+      background-color: #2980b9;
+    }
+
+    #back-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      background: #999;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    #timer-container {
+      margin: 20px auto;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    #progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    #progress {
+      height: 100%;
+      width: 0%;
+      background-color: #4CAF50;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    #warning {
+      text-align: center;
+      color: orange;
+      font-weight: bold;
+      display: none;
+      margin-top: 10px;
+    }
+
+    form#exam-form {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .question {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #ecf0f1;
+      border-radius: 8px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+      border: 1px solid #ccc;
+    }
+
+    #questions-container h3 {
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    #questions-container label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      padding: 8px 12px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    #questions-container label:hover {
+      background-color: #d6eaf8;
+    }
+
+    #questions-container input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    form button[type="submit"] {
+      background-color: #2ecc71;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 30px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    form button[type="submit"]:hover {
+      background-color: #27ae60;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #submit-message {
+      text-align: center;
+      color: green;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="instruction-bg">
+
+  <header>
+    <h1 id="exam-title">Exam Title</h1>
+  </header>
+
+  <ul id="exam-rules"></ul>
+
+  <div style="text-align: center; margin-bottom: 30px;">
+    <button id="start-exam-btn">Start Exam</button><br>
+    <button id="back-btn" onclick="window.location.href='index1.html'">Back</button>
+  </div>
+
+  <div id="timer-container" class="hidden">
+    <div id="timer">Time Left: 00:00</div>
+    <div id="progress-bar"><div id="progress"></div></div>
+    <div id="warning">⚠️ Only 30 seconds remaining!</div>
+  </div>
+
+  <form id="exam-form" class="hidden">
+    <div id="questions-container"></div>
+    <button type="submit">Submit Exam</button>
+  </form>
+
+  <p id="submit-message"></p>
+
+  <script src="exam.js"></script>
+</body>
+</html>

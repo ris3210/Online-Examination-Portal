@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Exam</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('me.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: rgba(255, 255, 224, 0.7);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      padding: 8px;
+      width: 100%;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .button-group button {
+      padding: 10px 20px;
+      font-size: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .button-group button:hover {
+      background-color: #45a049;
+    }
+
+    .question-block {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #create-message {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Create a New Exam</h1>
+
+    <div id="question-count-section">
+      <label for="question-count">How many questions you want in the exam?</label>
+      <input type="number" id="question-count" min="1" max="100" required />
+      <div class="button-group">
+        <button id="generate-questions-btn">Generate Questions</button>
+        <button type="button" onclick="window.location.href='admin-panel.html'">Back</button>
+      </div>
+    </div>
+
+    <form id="admin-form" class="hidden">
+      <label for="title">Exam Title:</label>
+      <input type="text" id="title" name="title" required>
+
+      <div id="questions-container"></div>
+
+      <div class="button-group">
+        <button type="submit">Create Exam</button>
+        <button type="button" onclick="window.location.href='admin-panel.html'">Go to Admin Panel</button>
+      </div>
+    </form>
+
+    <p id="create-message"></p>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
