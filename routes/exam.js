@@ -51,7 +51,12 @@ router.post('/:id/submit', async (req, res) => {
 
     const existingAttempt = await Attempt.findOne({ examId: exam._id, username });
     if (existingAttempt) {
-      return res.status(409).json({ error: 'You have already submitted this exam.' });
+      return res.status(409).json({
+        error: 'Exam already submitted.',
+        score: existing.score,
+        total: existing.total,
+        attemptId: existing._id
+      });
     }
 
     let score = 0;
