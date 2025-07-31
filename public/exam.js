@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressEl = document.getElementById('progress');
   const warningEl = document.getElementById('warning');
 
+  let examSubmitted = false;
+
   const banner = document.createElement('div');
   banner.id = 'custom-banner';
   Object.assign(banner.style, {
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     banner.appendChild(msg);
     banner.appendChild(closeBtn);
     banner.style.display = 'flex';
-
     setTimeout(() => {
       if (banner.style.display !== 'none') banner.style.display = 'none';
     }, timeout);
@@ -86,9 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleFullscreenExit() {
-    if (examStarted && !isFullscreen()) {
+    if (examStarted && !isFullscreen() && !examSubmitted) {
       showBanner('⚠️ Fullscreen exited. Submitting exam...');
-      setTimeout(() => submitExam(true), 1000);
+      setTimeout(() => {
+        if (!examSubmitted) submitExam(true);
+      }, 1000);
     }
   }
 
@@ -102,14 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`/api/exams/${encodeURIComponent(examId)}`);
       if (!res.ok) throw new Error('Failed to load exam');
       const exam = await res.json();
-
       fullExamData = exam;
       const questionCount = exam.questions.length;
       totalTime = timeLeft = questionCount * 60;
-
       examTitleEl.textContent = exam.title || 'Untitled Exam';
       document.title = `${exam.title || ''}`;
-
       const rules = [
         `This exam consists of ${questionCount} question${questionCount !== 1 ? 's' : ''}.`,
         `The total duration of the exam is ${questionCount} minute${questionCount !== 1 ? 's' : ''}.`,
@@ -136,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const title = document.createElement('h3');
       title.textContent = `${idx + 1}. ${q.text}`;
       div.appendChild(title);
-
       q.options.forEach(opt => {
         const label = document.createElement('label');
         label.style.display = 'block';
@@ -144,19 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
         radio.type = 'radio';
         radio.name = `q${idx}`;
         radio.value = opt;
-
         radio.addEventListener('mousedown', function () {
           this.wasChecked = this.checked;
         });
         radio.addEventListener('click', function () {
           if (this.wasChecked) this.checked = false;
         });
-
         label.appendChild(radio);
         label.appendChild(document.createTextNode(opt));
         div.appendChild(label);
       });
-
       questionsContainer.appendChild(div);
     });
   }
@@ -171,25 +167,27 @@ document.addEventListener('DOMContentLoaded', () => {
     timerContainer.classList.remove('hidden');
     timerEl.textContent = `Time Left: ${formatTime(timeLeft)}`;
     progressEl.style.width = `0%`;
-
     timerInterval = setInterval(() => {
       timeLeft--;
       timerEl.textContent = `Time Left: ${formatTime(timeLeft)}`;
-
       const progressPercent = ((totalTime - timeLeft) / totalTime) * 100;
       progressEl.style.width = `${progressPercent}%`;
-
       if (timeLeft === 30) warningEl.style.display = 'block';
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         warningEl.style.display = 'none';
-        submitExam(true);
+        if (!examSubmitted) submitExam(true);
       }
     }, 1000);
   }
 
   function submitExam(auto = false) {
-    if (examSubmitted) return;
+    if (examSubmitted) {
+      console.log("Already submitted, skipping.");
+      return;
+    }
+    examSubmitted = true;
+    console.log("Submitting exam...", auto ? "Auto" : "Manual");
 
     const answers = {};
     const unanswered = [];
@@ -202,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (unanswered.length && !auto) {
       showBanner(`Please answer question${unanswered.length > 1 ? 's' : ''}: ${unanswered.join(', ')}`);
+      examSubmitted = false;
       return;
     }
 
@@ -212,10 +211,16 @@ document.addEventListener('DOMContentLoaded', () => {
     exitFullScreen();
 
     const now = new Date();
-    const submittedAt = now.toISOString();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const timeStr = `${hours}:${minutes} ${ampm}`;
+    const submittedAt = `${day}/${month}/${year}, ${timeStr}`;
     sessionStorage.setItem('examSubmittedAt', submittedAt);
-
-    examSubmitted = true;
 
     fetch(`/api/exams/${encodeURIComponent(examId)}/submit`, {
       method: 'POST',
@@ -224,12 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then(async res => {
         const result = await res.json();
-
-        if (!res.ok || result.error) {
+        if (!res.ok && res.status !== 409) {
           throw new Error(result.error || 'Failed to submit exam');
         }
 
-        const { score, total } = result;
+        const score = result.score;
+        const total = result.total;
         if (score === undefined || total === undefined) {
           throw new Error('Score or total missing in result');
         }
@@ -241,11 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('examTitle', fullExamData.title);
         sessionStorage.setItem('questionsSnapshot', JSON.stringify(fullExamData.questions));
         sessionStorage.setItem('source', 'submission');
+
         window.location.href = 'result.html';
       })
       .catch(err => {
         console.error('Error submitting exam:', err);
         showBanner('Failed to submit exam');
+        examSubmitted = false; // allow retry if failed
       });
   }
 
@@ -261,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   examForm.addEventListener('submit', e => {
     e.preventDefault();
-    submitExam(false);
+    if (!examSubmitted) submitExam(false);
   });
 
   window.addEventListener('keydown', e => {
