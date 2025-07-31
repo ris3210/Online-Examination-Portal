@@ -190,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function submitExam(auto = false) {
     if (examSubmitted) return;
-    examSubmitted = true;
 
     const answers = {};
     const unanswered = [];
