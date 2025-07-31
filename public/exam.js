@@ -210,15 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     exitFullScreen();
 
     const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = now.getFullYear();
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    const timeStr = `${hours}:${minutes} ${ampm}`;
-    const submittedAt = `${day}/${month}/${year}, ${timeStr}`;
+    const submittedAt = now.toISOString(); // consistent format
     sessionStorage.setItem('examSubmittedAt', submittedAt);
 
     fetch(`/api/exams/${encodeURIComponent(examId)}/submit`, {
@@ -229,20 +221,18 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(async res => {
         const result = await res.json();
 
-        if (!res.ok && res.status !== 409) {
+        if (!res.ok || result.error) {
           throw new Error(result.error || 'Failed to submit exam');
         }
 
-        const score = result.score;
-        const total = result.total;
-        
+        const { score, total } = result;
         if (score === undefined || total === undefined) {
           throw new Error('Score or total missing in result');
         }
 
-        sessionStorage.setItem('resultScore', result.score);
-        sessionStorage.setItem('resultTotal', result.total);
-        sessionStorage.setItem('examResult', JSON.stringify({ examId, score: result.score, total: result.total, submittedAt }));
+        sessionStorage.setItem('resultScore', score);
+        sessionStorage.setItem('resultTotal', total);
+        sessionStorage.setItem('examResult', JSON.stringify({ examId, score, total, submittedAt }));
         sessionStorage.setItem('userAnswers', JSON.stringify(answers));
         sessionStorage.setItem('examTitle', fullExamData.title);
         sessionStorage.setItem('questionsSnapshot', JSON.stringify(fullExamData.questions));
