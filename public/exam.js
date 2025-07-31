@@ -229,17 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(async res => {
         const result = await res.json();
 
-        if (!res.ok) {
-          if (res.status === 409) {
-            showBanner(result.error || 'Exam already submitted');
-            setTimeout(() => {
-              window.location.href = 'result.html';
-            }, 1000);
-          } else {
-            throw new Error(result.error || 'Failed to submit');
-          }
-          return;
+        if (!res.ok && res.status !== 409) {
+          throw new Error(result.error || 'Failed to submit exam');
         }
+
+        const score = result.score;
+        const total = result.total;
+        
+        if (!score && !total) throw new Error('Missing result data');
 
         sessionStorage.setItem('resultScore', result.score);
         sessionStorage.setItem('resultTotal', result.total);
