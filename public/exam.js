@@ -236,7 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const score = result.score;
         const total = result.total;
         
-        if (!score && !total) throw new Error('Missing result data');
+        if (score === undefined || total === undefined) {
+          throw new Error('Score or total missing in result');
+        }
 
         sessionStorage.setItem('resultScore', result.score);
         sessionStorage.setItem('resultTotal', result.total);
