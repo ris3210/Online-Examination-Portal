@@ -79,6 +79,7 @@ router.post('/:id/submit', async (req, res) => {
       answers: userAnswers,
       score,
       total,
+      submittedAt: new Date(),
       questionsSnapshot: exam.questions.map(q => ({
         text: q.text,
         options: q.options,
