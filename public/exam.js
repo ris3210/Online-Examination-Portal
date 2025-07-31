@@ -212,8 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
     exitFullScreen();
 
     const now = new Date();
-    const submittedAt = now.toISOString(); // consistent format
+    const submittedAt = now.toISOString();
     sessionStorage.setItem('examSubmittedAt', submittedAt);
+
+    examSubmitted = true;
 
     fetch(`/api/exams/${encodeURIComponent(examId)}/submit`, {
       method: 'POST',
