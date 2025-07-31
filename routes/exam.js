@@ -53,9 +53,8 @@ router.post('/:id/submit', async (req, res) => {
     if (existingAttempt) {
       return res.status(409).json({
         error: 'Exam already submitted.',
-        score: existing.score,
-        total: existing.total,
-        attemptId: existing._id
+        score: existingAttempt.score,
+        total: existingAttempt.total,
       });
     }
 
