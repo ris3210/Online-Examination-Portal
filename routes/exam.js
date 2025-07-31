@@ -49,6 +49,11 @@ router.post('/:id/submit', async (req, res) => {
       return res.status(400).json({ error: 'Invalid answers format' });
     }
 
+    const existingAttempt = await Attempt.findOne({ examId: exam._id, username });
+    if (existingAttempt) {
+      return res.status(409).json({ error: 'You have already submitted this exam.' });
+    }
+
     let score = 0;
     const total = exam.questions.length;
 
@@ -92,22 +97,6 @@ router.post('/:id/submit', async (req, res) => {
   }
 });
 
-
-router.delete('/:id', async (req, res) => {
-  try {
-    const exam = await Exam.findByIdAndDelete(req.params.id);
-    if (!exam) {
-      return res.status(404).json({ error: 'Exam not found' });
-    }
-    res.json({ message: 'Exam deleted successfully' });
-  } catch (err) {
-    console.error('Error deleting exam:', err);
-    res.status(500).json({ error: 'Failed to delete exam' });
-  }
-});
-
-module.exports = router;
-
 router.put('/:id', async (req, res) => {
   try {
     const { title, questions } = req.body;
@@ -144,3 +133,5 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update exam' });
   }
 });
+
+module.exports = router;
