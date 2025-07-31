@@ -43,19 +43,10 @@ router.post('/:id/submit', async (req, res) => {
     if (!exam) return res.status(404).json({ error: 'Exam not found' });
 
     const userAnswers = req.body.answers;
-    const username = req.body.username || 'anonymous';
+    const username = req.body.username?.trim();
 
-    if (!userAnswers || typeof userAnswers !== 'object') {
-      return res.status(400).json({ error: 'Invalid answers format' });
-    }
-
-    const existingAttempt = await Attempt.findOne({ examId: exam._id, username });
-    if (existingAttempt) {
-      return res.status(409).json({
-        error: 'Exam already submitted.',
-        score: existingAttempt.score,
-        total: existingAttempt.total,
-      });
+    if (!userAnswers || !username) {
+      return res.status(400).json({ error: 'Missing answers or username' });
     }
 
     let score = 0;
@@ -64,10 +55,9 @@ router.post('/:id/submit', async (req, res) => {
     exam.questions.forEach((question, index) => {
       const questionId = `q${index}`;
       const userAnswer = userAnswers[questionId];
-      if (
-        userAnswer &&
-        userAnswer.toString().trim() === question.correctAnswer.toString().trim()
-      ) {
+      const correct = question.correctAnswer;
+
+      if (userAnswer && userAnswer.toString().trim() === correct.toString().trim()) {
         score++;
       }
     });
@@ -97,7 +87,7 @@ router.post('/:id/submit', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error submitting exam:', err);
+    console.error('❌ Error submitting exam:', err);
     res.status(500).json({ error: 'Failed to submit exam' });
   }
 });
