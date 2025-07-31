@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressEl = document.getElementById('progress');
   const warningEl = document.getElementById('warning');
 
-  // ✅ Custom Banner
   const banner = document.createElement('div');
   banner.id = 'custom-banner';
   Object.assign(banner.style, {
@@ -227,11 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers, username })
     })
-      .then(res => res.json())
-      .then(result => {
+      .then(async res => {
+        const result = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 409) {
+            showBanner(result.error || 'Exam already submitted');
+            setTimeout(() => {
+              window.location.href = 'result.html';
+            }, 1000);
+          } else {
+            throw new Error(result.error || 'Failed to submit');
+          }
+          return;
+        }
+
         sessionStorage.setItem('resultScore', result.score);
         sessionStorage.setItem('resultTotal', result.total);
-        sessionStorage.setItem('examResult', JSON.stringify({ examId, score: result.score, total: result.total, submittedAt}));
+        sessionStorage.setItem('examResult', JSON.stringify({ examId, score: result.score, total: result.total, submittedAt }));
         sessionStorage.setItem('userAnswers', JSON.stringify(answers));
         sessionStorage.setItem('examTitle', fullExamData.title);
         sessionStorage.setItem('questionsSnapshot', JSON.stringify(fullExamData.questions));
