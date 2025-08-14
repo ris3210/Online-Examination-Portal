@@ -1,41 +1,9 @@
-Online Exam Portal
+Overview – A web-based online exam platform where students can attempt multiple-choice exams, view detailed results, and track past attempts.
 
-Online Exam Portal – A secure, timer-based MCQ exam system with real-time evaluation, detailed results, and past attempt tracking, built using Node.js, Express, and MongoDB.
+Tech Stack – Built using Node.js, Express, MongoDB, HTML, CSS, and JavaScript with REST API integration.
 
-Features
+Features – Secure login system, timer-based exams, automatic submission on exiting fullscreen, detailed result display, and attempted exams history.
 
-User Authentication – Secure login and registration system for students.
+Usage – Admin can create and manage exams; students can log in, take exams, and view their results instantly.
 
-Exam Management – Admins can create, update, and delete exams with multiple-choice questions.
-
-Exam Attempt – Students take exams in fullscreen mode with a timer and automatic submission if rules are broken.
-
-Result Page – Detailed results including score, correct answers, and attempted questions.
-
-Attempt History – Students can view their past attempts with date, time, and score details.
-
-Getting Started
-Prerequisites
-
-Node.js installed (v14+ recommended)
-
-MongoDB installed and running locally or via MongoDB Atlas
-
-Git installed on your system
-
-Installation
-git clone https://github.com/ris3210/Online-Examination-Portal
-
-cd <project-folder>
-
-npm install
-
-Configuration
-
-Update MongoDB connection string in your server file or .env (if used).
-
-Run the Project
-npm start
-
-
-The app will start on http://localhost:3000 (or your configured port).
+Deployment – Fully deployable on cloud platforms like Render or Heroku for public access.
